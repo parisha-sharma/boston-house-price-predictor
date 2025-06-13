@@ -8,27 +8,30 @@
 <body>
     <div class="container">
         <h1>🏡 Boston House Price Predictor</h1>
-        <form action="/predict" method="post">
+        <form action="/" method="post">
             {% for feature in features %}
             <div class="input-group">
                 <label for="{{ feature }}">{{ labels[feature] }}</label>
-                
                 {% if feature == 'chas' %}
                     <select name="{{ feature }}" required>
-                        <option value="1">Yes (1)</option>
-                        <option value="0">No (0)</option>
+                        <option value="1" {% if user_input.get(feature) == '1' %}selected{% endif %}>Yes (1)</option>
+                        <option value="0" {% if user_input.get(feature) == '0' %}selected{% endif %}>No (0)</option>
                     </select>
                 {% else %}
-                    <input type="number" step="any" name="{{ feature }}" required>
+                    <input type="number" step="any" name="{{ feature }}" value="{{ user_input.get(feature, '') }}" required>
                 {% endif %}
             </div>
             {% endfor %}
             <button type="submit">Predict</button>
         </form>
 
-        {% if prediction %}
+        {% if prediction is not none %}
         <div class="result">
-            <h2>Predicted Price: ${{ prediction }}k</h2>
+            {% if prediction == "Error" %}
+                <h2>Error in prediction. Please check your inputs.</h2>
+            {% else %}
+                <h2>Predicted Price: ${{ prediction }}k</h2>
+            {% endif %}
         </div>
         {% endif %}
     </div>
