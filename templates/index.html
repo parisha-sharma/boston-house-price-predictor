@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Boston House Price Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🏡 Boston House Price Predictor</h1>
+        <form action="/predict" method="post">
+            {% for feature in features %}
+            <div class="input-group">
+                <label for="{{ feature }}">{{ labels[feature] }}</label>
+                
+                {% if feature == 'chas' %}
+                    <select name="{{ feature }}" required>
+                        <option value="1">Yes (1)</option>
+                        <option value="0">No (0)</option>
+                    </select>
+                {% else %}
+                    <input type="number" step="any" name="{{ feature }}" required>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction %}
+        <div class="result">
+            <h2>Predicted Price: ${{ prediction }}k</h2>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
