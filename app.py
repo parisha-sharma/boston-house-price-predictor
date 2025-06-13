@@ -6,11 +6,9 @@ app = Flask(__name__)
 
 model = pickle.load(open('model.pkl', 'rb'))
 
-# Original features
 features = ['crim', 'zn', 'indus', 'chas', 'nox', 'rm', 'age',
             'dis', 'rad', 'tax', 'ptratio', 'b', 'lstat']
 
-# User-friendly labels
 labels = {
     'crim': 'Crime Rate (per capita)',
     'zn': 'Residential Land Zoned (%)',
@@ -27,19 +25,20 @@ labels = {
     'lstat': 'Lower Status Population (%)'
 }
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('index.html', features=features, labels=labels)
+    prediction = None
+    user_input = {}
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        input_data = [float(request.form[feature]) for feature in features]
-        prediction = model.predict([input_data])[0]
-        prediction = round(prediction, 2)
-        return render_template('index.html', features=features, labels=labels, prediction=prediction)
-    except:
-        return render_template('index.html', features=features, labels=labels, prediction="Error")
+    if request.method == 'POST':
+        try:
+            user_input = {feature: request.form[feature] for feature in features}
+            input_data = [float(user_input[feature]) for feature in features]
+            prediction = round(model.predict([input_data])[0], 2)
+        except:
+            prediction = "Error"
+
+    return render_template('index.html', features=features, labels=labels, prediction=prediction, user_input=user_input)
 
 if __name__ == "__main__":
     app.run(debug=True)
