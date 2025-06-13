@@ -17,14 +17,14 @@ A machine learning web application built using Flask that predicts house prices 
 
 ## 📁 Project Structure
 📦BostonHousePricePredictor
-    ┣ 📜app.py
-    ┣ 📜model_training.ipynb
-    ┣ 📜requirements.txt
-    ┣ 📜BostonHousing.csv
-    ┣ 📂templates
-        ┃ ┗ 📜index.html
-    ┣ 📂static
-        ┃ ┗ 📜style.css
+┣ 📜app.py
+┣ 📜model_training.ipynb
+┣ 📜requirements.txt
+┣ 📜BostonHousing.csv
+┣ 📂templates
+┃ ┗ 📜index.html
+┣ 📂static
+┃ ┗ 📜style.css
 
 ## 🧠 How it Works
 1. `model_training.ipynb` trains a Linear Regression model
